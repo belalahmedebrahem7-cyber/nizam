@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090c12">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-v2-192.png">
+<link rel="apple-touch-icon" href="icon-v2-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="نظام حياتي">
@@ -299,6 +299,9 @@ details.dt[open]>summary{color:var(--fg)}
 .eod li{margin:2px 0}
 .plan{display:grid;grid-template-columns:minmax(0,1.6fr) 1fr 1fr;gap:8px;align-items:center;font-size:13.5px}
 .plan .hot{color:var(--c-uni);font-weight:600}
+.cnt-set{margin-top:10px}
+.cnt-set input{width:100%}
+.cnt-rg{width:100%;margin-top:10px;accent-color:var(--c-worship)}
 @media (max-width:420px){
   .row{grid-template-columns:auto 64px minmax(0,1fr);}
   .row .tag{display:none}
@@ -878,11 +881,13 @@ function qcardHtml(k){
 }
 function counterHtml(k){
   var L=getLog(k,false)||{},c=L.c||{};
-  var h='<div class="card"><div class="card-head"><h2>العدّاد</h2><span class="muted small">اضغط +1 مع كل مرة</span></div>';
+  var h='<div class="card"><div class="card-head"><h2>العدّاد</h2><span class="muted small">اضغط، أو اكتب الرقم، أو حرّك الشريط</span></div>';
   S.counters.forEach(function(x){
     var n=c[x.id]||0,g=Math.max(1,x.goal||1),p=Math.min(100,Math.round(n/g*100));
     h+='<div class="cnt'+(n>=g?' ok':'')+'"><div class="cnt-top"><span class="cnt-t">'+esc(x.title)+'</span><span class="num muted small">'+n+' / '+g+'</span></div><div class="bar"><i style="width:'+p+'%"></i></div>'+
-      '<div class="cnt-btns"><button class="btn" data-act="cnt" data-id="'+x.id+'" data-n="-1" aria-label="ناقص واحد">−1</button><button class="btn primary big" data-act="cnt" data-id="'+x.id+'" data-n="1">+1</button><button class="btn" data-act="cnt" data-id="'+x.id+'" data-n="10">+10</button></div></div>';
+      '<div class="cnt-btns"><button class="btn" data-act="cnt" data-id="'+x.id+'" data-n="-1" aria-label="ناقص واحد">−1</button><button class="btn primary big" data-act="cnt" data-id="'+x.id+'" data-n="1">+1</button><button class="btn" data-act="cnt" data-id="'+x.id+'" data-n="10">+10</button></div>'+
+      '<div class="cnt-set"><label class="lbl" for="cv'+x.id+'">العدد اللي وصلت له</label><input type="number" inputmode="numeric" min="0" id="cv'+x.id+'" data-set="cntv.'+x.id+'" data-re="1" value="'+n+'" placeholder="اكتب الرقم"></div>'+
+      '<input type="range" class="cnt-rg" min="0" max="'+Math.max(g*3,n)+'" step="'+(g>=300?10:g>=100?5:1)+'" value="'+n+'" data-set="cntv.'+x.id+'" data-re="1" aria-label="حرّك للعدد"></div>';
   });
   return h+'</div>';
 }
@@ -1477,6 +1482,7 @@ document.addEventListener('change',function(ev){
   else if(p[0]==='padj'){S.settings.padj[p[1]]=parseInt(v,10)||0;pcache={}}
   else if(p[0]==='notif'){S.settings.notif[+p[1]]=v}
   else if(p[0]==='review'){var wk=key(weekStart(parseKey(todayKey())));if(!S.reviews[wk])S.reviews[wk]={};S.reviews[wk][p[1]]=v}
+  else if(p[0]==='cntv'){var Lv=getLog(S.view.date,true);if(!Lv.c)Lv.c={};var pv2=Lv.c[p[1]]||0;Lv.c[p[1]]=Math.max(0,parseInt(v,10)||0);syncCounter(S.view.date,p[1],pv2)}
   else if(p[0]==='counter'){var cc=byId(S.counters,p[1]);if(cc)cc.goal=Math.max(1,parseInt(v,10)||1)}
   save();
   if(t.getAttribute('data-re'))render();
