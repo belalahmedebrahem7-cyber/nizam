@@ -329,9 +329,9 @@ details.dt[open]>summary{color:var(--fg)}
 .subtabs button{flex:1;min-height:40px;border:0;border-radius:12px;background:none;color:var(--mute);font:inherit}
 .subtabs button.on{background:var(--s1);color:var(--fg);font-weight:600;box-shadow:0 1px 6px rgba(0,0,0,.25)}
 .water{display:flex;align-items:center;justify-content:space-between;gap:14px}
-.wcol{display:flex;flex-direction:column;align-items:center;gap:8px}
-.wcol .wb{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--s2);color:var(--fg);font-size:26px;line-height:1;display:grid;place-items:center}
-.wcol .wb.plus{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.wtcol{display:flex;flex-direction:column;align-items:center;gap:8px}
+.wtcol .wtb{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--s2);color:var(--fg);font-size:26px;line-height:1;display:grid;place-items:center}
+.wtcol .wtb.plus{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .glass{width:84px;height:118px;color:var(--mute)}
 .winfo .big{font-size:34px}
 .glowfx{position:fixed;inset:0;pointer-events:none;z-index:70;opacity:0;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--accent) 55%,transparent),transparent 62%);animation:glw 2s ease-out}
@@ -1353,9 +1353,9 @@ function tickFx(tk){
 function waterHtml(k){
   var L=getLog(k,false)||{},c=(L.c&&L.c.water)||0,cd=byId(S.counters,'water')||{goal:8},g=Math.max(1,cd.goal||8),p=Math.min(1,c/g),ml=S.settings.cupMl||250,lit=Math.round(c*ml/100)/10,gl=Math.round(g*ml/100)/10,hh=Math.round(p*118);
   return '<div class="card"><div class="water"><div class="winfo"><div class="lbl">الماء</div><div class="big num">'+c+' <span style="font-size:16px">كوب</span></div><div class="muted small num">≈ '+lit+' لتر من '+gl+' لتر</div><div class="muted small" style="margin-top:6px">كل ضغطة = كوب ('+ml+' مل)</div></div>'+
-    '<div class="wcol"><button class="wb plus" data-act="cnt" data-id="water" data-n="1" aria-label="كوب ماء زيادة">+</button>'+
+    '<div class="wtcol"><button class="wtb plus" data-act="cnt" data-id="water" data-n="1" aria-label="كوب ماء زيادة">+</button>'+
     '<svg class="glass" viewBox="0 0 100 140" aria-hidden="true"><defs><clipPath id="gcl"><path d="M16 8H84L76 128Q75 134 68 134H32Q25 134 24 128Z"/></clipPath></defs><g clip-path="url(#gcl)"><rect x="0" y="0" width="100" height="140" fill="var(--s2)"/><rect x="0" y="'+(134-hh)+'" width="100" height="'+hh+'" fill="var(--accent)" opacity=".85"/>'+(hh>6?'<ellipse cx="50" cy="'+(134-hh)+'" rx="40" ry="3" fill="#fff" opacity=".25"/>':'')+'</g><path d="M16 8H84L76 128Q75 134 68 134H32Q25 134 24 128Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg>'+
-    '<button class="wb" data-act="cnt" data-id="water" data-n="-1" aria-label="كوب ماء نقص">−</button></div></div></div>';
+    '<button class="wtb" data-act="cnt" data-id="water" data-n="-1" aria-label="كوب ماء نقص">−</button></div></div></div>';
 }
 /* ---------- renderers ---------- */
 function head(title,sub,extra){
